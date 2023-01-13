@@ -1,0 +1,82 @@
+
+[NEAT]
+fitness_criterion     = max // basicamente, o que queremos otimizar no nosso programa (maximizar a pontuação)
+fitness_threshold     = 1000 // um limite. Em determinado momento o passaro imortal. Nessa caso, o limite e a pontuação de 1000
+pop_size           = 100 // tamanho da população. Nesse caso, a cada geração teremos 100 passaros
+reset_on_extinction   = False // redes neurais (passaros, nesse caso) com valores muito parecidos são considerador da mesma especie pelo NEAT. Essa configuração determina o que ira ser feito quando todas as especies forem extintas. No caso de False, dará erro, caso True, uma nova especie do 0 será criada. Com False, ao inves de deixarmos a IA ficar tentando infinitamente novas possibilidades talvez possamos corrigir algum erro manualmente.
+
+[DefaultGenome]
+# node activation options   // funções de ativação que serão usadas pela IA
+activation_default      = tanh  // no caso, utilizaremos tangente hiperbolica
+activation_mutate_rate  = 0.0   // nenhuma outra função sera utilizada, portanto usamos o valor 0
+activation_options      = tanh  // opções de funções de ativação. Como queremos sempre o uso da tanH, colocamos ela aqui também.
+
+# node aggregation options  // referente a formula de calculo da formula utilizada no calculo de possibilidades do pulo ou nao (arquivo Inteligencia Artificial.txt)
+aggregation_default     = sum   // após as realizações das multiplicações, queremos que ela some os resultados para tomar uma decisão, portanto colocamos sum
+aggregation_mutate_rate = 0.0   // nenhuma outra opção será utilizada, portanto 0.
+aggregation_options     = sum   // nenhuma outra opção será utilizada, portanto sum novamente.
+
+# node bias options // configuração do bias (valor aleatório definido pela propria IA). Aqui, iremos apenas definir algumas config iniciais de mutação, limite, etc.
+bias_init_mean          = 0.0   // media do bias
+bias_init_stdev         = 1.0   // desvio padrao
+bias_max_value          = 30.0  // maior valor
+bias_min_value          = -30.0 // menor valor
+bias_mutate_power       = 0.5   // poder da mutação. Caso ele for sofrer uma mutação de 20 para 30, nesse caso definiremos uma redução de 50% desse total, assim, aumentará apenas 5 ao invés de 10 (20 para 25).
+bias_mutate_rate        = 0.7   // taxa de mutação. De um passaro para outro, aqui teremos uma chance de 70% de mutação do bias.
+bias_replace_rate       = 0.1   // chance em que, ao inves de pegar o bias anterior a mutação e fazer uma conta, ele criará um novo valor ao bias. Aqui atribuimos um valor de 10% para que isso aconteça.
+
+# genome compatibility options  // dirão como ele ira separar a população em especies. Definira quais as semelhanças que dirão se os passaros sao da mesma especie ou nao.
+compatibility_disjoint_coefficient = 1.0
+compatibility_weight_coefficient   = 0.5
+
+# connection add/remove rates   // probabilidade de adicionar ou remover uma conexao. Referente as redes neurais e as conexoes de input/ output
+conn_add_prob           = 0.5   // possibilidade de adicionar
+conn_delete_prob        = 0.5   // possibilidade de deletar
+
+# connection enable options
+enabled_default         = True  // existe a possibilidade de uma conexao existente não ser ativa. Com True, impossibilitamos isso e tornamos todas as conexões existentes ativas.
+enabled_mutate_rate     = 0.01  // probabilidade de existir uma mutação dentro dessa configuração. (deixamos pouco, 1%)
+
+feed_forward            = True  // os valores do input no nosso caso são passados da esquerda (input) para a direita (output). Com True, deixamos da esquerda pra direita.
+initial_connection      = full
+
+# node add/remove rates // parecido com a conexão, define a possibilidade de adicionar/ deletar um nódulo/bolinha/input novo
+node_add_prob           = 0.2
+node_delete_prob        = 0.2
+
+# network parameters    // parametros da rede neural
+num_hidden              = 0 // quantidade de nós intermediarios
+num_inputs              = 3 // quantidade de inputs (informações do jogo necessarias pra IA, pos y do passaro, distancia para cano de baixo e de cima
+num_outputs             = 1 // quantidade de outputs (passaro ira pular ou nao)
+
+# node response options // mesmos parametros do que ja explicado para a configuração do bias acima. So que aqui, referente ao valor de response, que é o numero pelo qual ele multiplica os valores dos nódulos.
+response_init_mean      = 1.0   // como nao definiremos nenhuma mutação, o valor sera 1 o tempo todo
+response_init_stdev     = 0.0
+response_max_value      = 30.0
+response_min_value      = -30.0
+response_mutate_power   = 0.0
+response_mutate_rate    = 0.0
+response_replace_rate   = 0.0
+
+# connection weight options // mesma configurações acima aplicadas aos pesos (valores aleatorios criados para a multiplicação)
+weight_init_mean        = 0.0
+weight_init_stdev       = 1.0
+weight_max_value        = 30
+weight_min_value        = -30
+weight_mutate_power     = 0.5
+weight_mutate_rate      = 0.8
+weight_replace_rate     = 0.1
+
+blocos de configuração relacionados mais as especies de dentro da nossa população:
+
+[DefaultSpeciesSet]
+compatibility_threshold = 3.0   // parametro para ajudar na criação de especies. Com um numero muito alto, a IA iria considerar todos os passaros da mesma especie.
+
+[DefaultStagnation]
+species_fitness_func = max  // a função das especies é também maximizar a pontuação
+max_stagnation       = 20   // estagnação maxima. Caso uma especie não for capaz de evoluir (bater o recortde) em 20 geração (nesse caso), diremos que ela estagnou, e, se ela estagnou, ela será morta.
+species_elitism      = 2    // ligado a configuração acima. Para impedir que a morte por estagnação aconteça com todas as especies, deixaremos um valor de 2, para que 2 especies pelo menos sempre existam vivas.
+
+[DefaultReproduction]
+elitism            = 2  // quantidade de individuos de cada especie que passarao para a proxima geração que nao irão sofrer mutação.
+survival_threshold = 0.2    // percentual de uma especie que pode se reproduzir para a geração seguinte.
