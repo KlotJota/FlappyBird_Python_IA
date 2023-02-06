@@ -10,3 +10,5 @@
 <p>Conforme uma geração de pássaros é inteiramente eliminada, ela mantém os 2 último melhores pássaros e faz modificações minúsculas nos cálculos, e cria uma nova geração inteira com base nesses pássaros. Ela repete esse processo até que exista um pássaro tão bom que se torna imortal no jogo.</p>
  
 <img src="https://github.com/KlotJota/FlappyBird_Python_IA/blob/main/FlappyBirdIA_GIF.gif" width="200" height="270"/>
+
+<p>Código realizado com base em aulas do canal Hashtag Programação no Youtube</p>
